@@ -1,0 +1,38 @@
+#!/bin/bash
+
+UPSTREAM="https://github.com/ghc"
+#UPSTREAM="http://git.haskell.org/ghc.git"
+
+WORKING=ghc-working
+VALIDATE=ghc-validate
+LFORK=ghc-leroux
+
+SRCTREES=.
+BUILDTREES=.
+
+# Don't run on accident!
+# This requires GHCDIR to exist in the root of your ghc-dev dir.
+if [ ! -f GHCDEVDIR ]; then
+  echo "GHCDEVDIR does not exist."
+  exit 1
+fi
+
+pushd $SRCTREES
+
+# Get sources.
+git clone $UPSTREAM $WORKING
+pushd $WORKING
+./sync-all --nofib --testsuite get
+popd
+
+# You could `cp -R` or something but I find this better...
+ghc-clonetree $WORKING $LFORK # local fork
+ghc-clonetree $WORKING $VALIDATE # validate tree
+
+popd # pop $SRCTREES.
+
+# Create build trees.
+mkdir $BUILDTREES
+ghc-mkbuildtree $SRCTREES/$WORKING $BUILDTREES/$WORKING-build
+#ghc-mkbuildtree $SRCTREES/$LFORK $BUILDTREES/$LFORK-build
+#ghc-mkbuildtree $SRCTREES/$VALIDATE $BUILDTREES/$VALIDATE-build

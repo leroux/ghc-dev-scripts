@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./sync-all checkout master
+git pull -tu origin master && ./sync-all pull -tu origin master && git fetch origin && ./sync-all fetch origin

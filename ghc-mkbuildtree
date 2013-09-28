@@ -1,0 +1,12 @@
+#!/bin/bash
+
+SRCDIR=`pwd`/$1
+BUILD=$2
+
+mkdir $BUILD
+pushd $BUILD
+echo "Linking $SRCDIR to $BUILD..."
+lndir $SRCDIR
+ln -s $SRCDIR/.git .
+
+cp mk/build.mk{.sample,}
