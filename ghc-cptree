@@ -9,6 +9,5 @@ cp -Rv $LOCAL $BRANCH
 pushd $BRANCH
 
 ./sync-all -r $LOCAL remote add working
-ghc-pointremotes
 
 cp mk/build.mk{.sample,}
