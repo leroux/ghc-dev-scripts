@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# args
+# <build-dirs> <append_n> <make-args>
+
+if [ ! -f GHCDEVDIR ]; then
+  echo "No GHCDEVDIR."
+fi
+
+root=`pwd`
+n=0
+builds=$1
+args=""
+
+if [ $2 ]; then
+  n=$2
+fi
+
+if [ $3 ]; then
+  args=$3
+fi
+  
+date=`date "+%F-%T"`
+logsdir=$root/nofib-analyses/$date
+mkdir -p $logsdir
+
+for build in $builds; do
+  if [ ! -d $build/nofib ]; then
+    continue
+  fi
+
+  pushd $build/nofib
+  make clean
+  make boot
+  make -k $args 2>&1 | tee $logsdir/$build-$n
+  popd
+done
