@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Clones entire local tree (including builds!)
+
+LOCAL=`pwd`/$1
+BRANCH=$2
+
+cp -Rv $LOCAL $BRANCH
+pushd $BRANCH
+
+./sync-all -r $LOCAL remote add working
+ghc-pointremotes
+
+cp mk/build.mk{.sample,}

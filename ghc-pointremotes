@@ -1,0 +1,19 @@
+#!/bin/bash
+
+UPSTREAM="https://github.com/ghc"
+#UPSTREAM="http://git.haskell.org/ghc.git"
+
+FORK="git@github.com:leroux" # remote fork
+LFORK="$HOME/ghc/ghc-leroux" # local fork
+
+if [[ $UPSTREAM ]]; then
+  ./sync-all -r $UPSTREAM remote upstream
+fi
+
+if [[ $FORK ]]; then
+  ./sync-all -r $FORK remote add fork
+fi
+
+if [[ $LFORK ]]; then
+  ./sync-all -r $LFORK remote add lfork
+fi

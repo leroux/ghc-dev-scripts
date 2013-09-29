@@ -3,12 +3,6 @@
 LOCAL=`pwd`/$1
 BRANCH=$2
 
-UPSTREAM="https://github.com/ghc"
-#UPSTREAM="http://git.haskell.org/ghc.git"
-
-FORK="git@github.com:leroux" # remote fork
-LFORK="$HOME/ghc/ghc-leroux" # local fork
-
 git clone $LOCAL $BRANCH
 pushd $BRANCH
 
@@ -18,16 +12,6 @@ pushd $BRANCH
 # add the local repo you are cloning as `working`
 ./sync-all -r $LOCAL remote add working
 
-if [[ $UPSTREAM ]]; then
-  ./sync-all -r $UPSTREAM remote upstream
-fi
-
-if [[ $FORK ]]; then
-  ./sync-all -r $FORK remote add fork
-fi
-
-if [[ $LFORK ]]; then
-  ./sync-all -r $LFORK remote add lfork
-fi
+ghc-pointremotes
 
 cp mk/build.mk{.sample,}

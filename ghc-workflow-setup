@@ -8,10 +8,9 @@ VALIDATE=ghc-validate
 LFORK=ghc-leroux
 
 SRCTREES=.
-BUILDTREES=.
 
-# Don't run on accident!
-# This requires GHCDIR to exist in the root of your ghc-dev dir.
+# Ensure that this doesn't run on accident!
+# Requires GHCDIR to exist in the root of your ghc-dev dir.
 if [ ! -f GHCDEVDIR ]; then
   echo "GHCDEVDIR does not exist."
   exit 1
@@ -25,14 +24,6 @@ pushd $WORKING
 ./sync-all --nofib --testsuite get
 popd
 
-# You could `cp -R` or something but I find this better...
-ghc-clonetree $WORKING $LFORK # local fork
-ghc-clonetree $WORKING $VALIDATE # validate tree
+ghc-clonetree $WORKING $VALIDATE
 
 popd # pop $SRCTREES.
-
-# Create build trees.
-mkdir $BUILDTREES
-ghc-mkbuildtree $SRCTREES/$WORKING $BUILDTREES/$WORKING-build
-#ghc-mkbuildtree $SRCTREES/$LFORK $BUILDTREES/$LFORK-build
-#ghc-mkbuildtree $SRCTREES/$VALIDATE $BUILDTREES/$VALIDATE-build
