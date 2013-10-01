@@ -1,13 +1,16 @@
 #!/bin/bash
 
+GHC="https://github.com/ghc/ghc"
+
 UPSTREAM="https://github.com/ghc"
 #UPSTREAM="http://git.haskell.org/ghc.git"
 
-WORKING=ghc-working
-VALIDATE=ghc-validate
-LFORK=ghc-leroux
+SRC=ghc-clone # isn't to be touched locally... just synced with remotes.
+SRCDIR=`pwd`/$SRC
+WORKING=ghc-working # work in here
+VALIDATE=ghc-validate # pass work to validate before pushing to remotes.
 
-SRCTREES=.
+SRCTREES=. # root of all ghc source trees.
 
 # Ensure that this doesn't run on accident!
 # Requires GHCDIR to exist in the root of your ghc-dev dir.
@@ -18,12 +21,26 @@ fi
 
 pushd $SRCTREES
 
-# Get sources.
-git clone $UPSTREAM $WORKING
-pushd $WORKING
-./sync-all --nofib --testsuite get
+# src tree (should never be touched locally)
+git clone $GHC $SRC # Get sources.
+pushd $SRC
+./sync-all --nofib --testsuite --extra get
 popd
 
-ghc-clonetree $WORKING $VALIDATE
+# working tree
+git clone $SRC $WORKING
+pushd $WORKING
+ghc-pointremotes
+./sync-all -r $SRCDIR --testsuite --no-dph get
+./sync-all set-url --push fork
+popd
+
+# validate tree
+git clone $WORKING $VALIDATE
+pushd $VALIDATE
+ghc-pointremotes
+./sync-all -r $SRCDIR --nofib --testsuite get
+./sync-all set-url --push fork
+popd
 
 popd # pop $SRCTREES.

@@ -7,11 +7,7 @@ git clone $LOCAL $BRANCH
 pushd $BRANCH
 
 ./sync-all -r $LOCAL remote set-url origin
-./sync-all --testsuite --nofib get
-
-# add the local repo you are cloning as `working`
-./sync-all -r $LOCAL remote add working
-
 ghc-pointremotes
+./sync-all --nofib --no-dph get
 
 cp mk/build.mk{.sample,}

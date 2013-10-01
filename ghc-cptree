@@ -5,7 +5,7 @@
 LOCAL=`pwd`/$1
 BRANCH=$2
 
-cp -Rv $LOCAL $BRANCH
+cp -Rpv $LOCAL $BRANCH
 pushd $BRANCH
 
 ./sync-all -r $LOCAL remote add working
