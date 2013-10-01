@@ -8,6 +8,6 @@ pushd $BRANCH
 
 ./sync-all -r $LOCAL remote set-url origin
 ghc-pointremotes
-./sync-all --nofib --no-dph get
+./sync-all --no-dph get
 
 cp mk/build.mk{.sample,}
