@@ -7,7 +7,7 @@ SRC="$HOME/ghc/ghc-clone"
 WORKING="$HOME/ghc/ghc-working"
 FORK="git@github.com:leroux" # remote fork
 
-./sync-all -r $SRC remote add ghc-clone
+./sync-all -r $SRC remote add src
 ./sync-all -r $WORKING remote add working
 ./sync-all -r $UPSTREAM remote add upstream
 ./sync-all -r $FORK remote add fork
